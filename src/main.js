@@ -4,6 +4,16 @@ const path = require("path");
 let mainWindow;
 
 function createWindow() {
+  // Kiểm tra thời hạn sử dụng
+  const startDate = new Date("2025-07-09T00:00:00");
+  const currentDate = new Date();
+  const endDate = new Date(startDate.getTime() + 72 * 60 * 60 * 1000); // 72 giờ sau ngày bắt đầu
+
+  if (currentDate < startDate || currentDate > endDate) {
+    app.quit();
+    return;
+  }
+
   mainWindow = new BrowserWindow({
     width: 400,
     height: 400,

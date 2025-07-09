@@ -21,21 +21,37 @@ class TimerApp {
     this.startBtn = document.getElementById("startBtn");
     this.resetBtn = document.getElementById("resetBtn");
     this.alertSound = document.getElementById("alertSound");
+    this.footer = document.getElementById("appFooter");
 
     // Bind event listeners
     this.startBtn.addEventListener("click", () => this.startTimer());
     this.resetBtn.addEventListener("click", () => this.resetTimer());
     this.toggleConfigBtn.addEventListener("click", () => this.toggleConfig());
 
+    // Kiểm tra thời hạn sử dụng
+    // this.checkLicense();
+
     // Initialize
     this.updateTimerDisplay();
+  }
+
+  // Kiểm tra thời hạn sử dụng
+  checkLicense() {
+    const startDate = new Date("2025-07-09T00:00:00");
+    const currentDate = new Date();
+    const endDate = new Date(startDate.getTime() + 72 * 60 * 60 * 1000); // 72 giờ sau ngày bắt đầu
+
+    if (currentDate < startDate || currentDate > endDate) {
+      alert("Thời hạn sử dụng đã hết. Ứng dụng sẽ đóng.");
+      window.electronAPI.closeApp();
+    }
   }
 
   // Toggle config visibility and window size
   toggleConfig() {
     this.isConfigVisible = !this.isConfigVisible;
     this.isCompactMode = !this.isConfigVisible;
-  
+
     if (this.isConfigVisible) {
       this.configControls.classList.remove("hidden");
       this.buttonContainer.classList.remove("hidden");
@@ -44,7 +60,7 @@ class TimerApp {
       this.toggleConfigBtn.classList.add("visible");
       this.timerContainer.classList.remove("compact-mode");
       document.body.style.justifyContent = "flex-start";
-  
+
       // Resize window to normal
       window.electronAPI.resizeWindowNormal();
     } else {
@@ -54,10 +70,10 @@ class TimerApp {
       this.toggleConfigBtn.textContent = "🔧";
       this.timerContainer.classList.add("compact-mode");
       document.body.style.justifyContent = "center"; // Căn giữa theo chiều dọc
-  
+
       // Resize window to compact
       window.electronAPI.resizeWindowCompact();
-      
+
       // Đảm bảo timer và nút config được căn giữa
       setTimeout(() => {
         // Đợi một chút để animation hoàn thành
