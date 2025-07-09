@@ -1,0 +1,29 @@
+{
+  "name": "timer-countdown",
+  "version": "1.0.0",
+  "description": "Ứng dụng đồng hồ đếm ngược với tính năng nhắc nhở",
+  "main": "main.js",
+  "scripts": {
+    "start": "bun electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [
+    "timer",
+    "countdown",
+    "reminder"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.timer.countdown",
+    "productName": "Timer Countdown",
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    }
+  }
+}
