@@ -1,0 +1,281 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 10px;
+    user-select: none;
+    overflow: auto;
+    min-height: 100vh;
+    height: 100%;
+    transition: overflow 0.3s ease;
+    overflow: hidden;
+}
+
+/* Ẩn scrollbar khi timer chạy */
+body.timer-running {
+    overflow: hidden;
+}
+
+/* Cập nhật CSS cho container để đảm bảo kích thước đồng bộ */
+.container {
+    background-color: rgba(165, 40, 248, 0);
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 350px;
+    min-width: 250px;
+    min-height: 100px; /* Đồng bộ với minHeight trong main.js */
+    transition: all 0.3s ease;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Trạng thái khi timer đang chạy */
+.container.timer-running {
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
+    padding: 8px;
+}
+
+/* Sửa màu cho icon-button để hiển thị rõ hơn */
+.icon-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 18px;
+    padding: 8px;
+    cursor: pointer;
+    min-width: auto;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    opacity: 1;
+    visibility: visible !important;
+}
+
+/* Thêm class mới để đảm bảo nút config luôn hiển thị */
+.always-visible {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.timer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.timer-header.hidden {
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+
+.timer-header {
+    margin: 0;
+    font-size: 18px;
+    color: #fff;
+}
+
+.timer {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.timer-running {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+    max-height: 500px;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    width: 100%;
+}
+
+.controls.hidden {
+    max-height: 0;
+    margin-bottom: 0;
+    opacity: 0;
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+label {
+    font-size: 14px;
+    color: #fff;
+    flex: 1;
+    text-align: left;
+}
+
+input {
+    width: 70px;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 0 5px;
+    white-space: nowrap;
+    min-width: 90px;
+    flex-shrink: 0;
+}
+
+.icon-button:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
+    color: #000 !important;
+    opacity: 1 !important;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 50px;
+    overflow: visible;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.button-container.hidden {
+    max-height: 0;
+    min-height: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.flash {
+    animation: flash 0.5s infinite;
+}
+
+@keyframes flash {
+    0% {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    50% {
+        background-color: rgba(255, 204, 204, 0.7);
+    }
+
+    100% {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Drag area cho cửa sổ */
+.drag-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    -webkit-app-region: drag;
+}
+
+.no-drag {
+    -webkit-app-region: no-drag;
+}
+
+/* Cập nhật CSS cho chế độ compact */
+.container.compact-mode {
+    min-height: 50px;
+    height: 50px;
+    max-height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    width: 100%;
+    max-width: 150px;
+}
+
+.container.compact-mode .timer {
+    margin: 0;
+    font-size: 36px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.container.compact-mode .icon-button {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-left: 15px;
+    width: 30px;
+    height: 30px;
+}
+
+@media (max-width: 400px) {
+    .container {
+        width: 95%;
+        min-width: 250px;
+        padding: 10px;
+    }
+
+    .timer {
+        font-size: 36px;
+    }
+
+    button {
+        padding: 8px 12px;
+        min-width: 80px;
+    }
+}

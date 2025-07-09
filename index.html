@@ -17,29 +17,74 @@
             padding: 10px;
             user-select: none;
             overflow: auto;
-            /* Thay đổi từ hidden sang auto để cho phép scroll */
             min-height: 100vh;
             height: 100%;
+            transition: overflow 0.3s ease;
+            overflow: hidden;
         }
 
+        /* Ẩn scrollbar khi timer chạy */
+        body.timer-running {
+            overflow: hidden;
+        }
+
+        /* Cập nhật CSS cho container để đảm bảo kích thước đồng bộ */
         .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            /* Tăng độ đục nền */
+            background-color: rgba(165, 40, 248, 0);
             border-radius: 10px;
-            padding: 15px;
+            padding: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 90%;
             max-width: 350px;
             min-width: 280px;
+            min-height: 50px;
+            /* Thêm min-height để đảm bảo kích thước tối thiểu */
             transition: all 0.3s ease;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .compact-mode .container {
-            padding: 10px;
+        /* Trạng thái khi timer đang chạy */
+        .container.timer-running {
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+            padding: 8px;
+        }
+
+        /* Sửa màu cho icon-button để hiển thị rõ hơn */
+        .icon-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            /* Sửa lại màu từ red thành white */
+            font-size: 18px;
+            padding: 8px;
+            cursor: pointer;
+            min-width: auto;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            opacity: 1;
+            visibility: visible !important;
+            /* Đảm bảo luôn hiển thị */
+        }
+
+        /* Thêm class mới để đảm bảo nút config luôn hiển thị */
+        .always-visible {
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .timer-header {
@@ -47,38 +92,43 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-            /* Tăng margin */
+            transition: all 0.3s ease;
         }
 
-        .compact-mode .timer-header h2 {
-            font-size: 16px;
+        .timer-header.hidden {
+            opacity: 0;
+            max-height: 0;
+            margin-bottom: 0;
+            overflow: hidden;
+        }
+
+        .timer-header {
             margin: 0;
+            font-size: 18px;
+            color: #fff;
         }
 
         .timer {
             font-size: 48px;
             font-weight: bold;
             margin: 15px 0;
-            /* Tăng margin */
-            color: #333;
-            transition: font-size 0.3s ease;
+            color: #fff;
+            transition: all 0.3s ease;
         }
 
-        .compact-mode .timer {
-            font-size: 36px;
-            margin: 5px 0;
+        .timer-running {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .controls {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            /* Tăng gap */
             margin-bottom: 15px;
-            /* Tăng margin */
             max-height: 500px;
             overflow: hidden;
-            transition: max-height 0.5s ease;
+            transition: all 0.5s ease;
             width: 100%;
         }
 
@@ -97,16 +147,14 @@
 
         label {
             font-size: 14px;
-            color: #555;
+            color: #fff;
             flex: 1;
             text-align: left;
         }
 
         input {
             width: 70px;
-            /* Tăng width */
             padding: 6px;
-            /* Tăng padding */
             border: 1px solid #ddd;
             border-radius: 4px;
         }
@@ -116,38 +164,69 @@
             color: white;
             border: none;
             padding: 10px 15px;
-            /* Tăng padding */
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.3s;
             margin: 0 5px;
-            /* Tăng margin */
             white-space: nowrap;
             min-width: 90px;
-            /* Tăng min-width */
             flex-shrink: 0;
-            /* Ngăn nút co lại */
         }
 
         .icon-button {
-            background: none;
-            border: none;
-            color: #555;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: red;
             font-size: 18px;
-            /* Tăng font size */
-            padding: 5px;
+            padding: 8px;
             cursor: pointer;
             min-width: auto;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            opacity: 1;
+            visibility: visible;
         }
 
-        .button-container {
+        .container.timer-running {
+            max-height: 15px !important;
+        }
+
+        /* Trạng thái khi timer chạy - luôn hiển thị nút config */
+        .container.timer-running .icon-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: red !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.7;
+            padding: 5px;
+        }
+
+        /* 
+        /* Hiện rõ hơn khi hover */
+        .container.timer-running:hover .icon-button {
+            opacity: 1;
+        }
+
+        .icon-button:hover {
+            background: rgba(255, 255, 255, 0.4) !important;
+            color: #000 !important;
+            opacity: 1 !important;
+        }
+
+        */ .button-container {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            /* Cho phép wrap nếu không đủ không gian */
             gap: 10px;
-            /* Thêm gap thay vì margin */
             min-height: 50px;
             overflow: visible;
             transition: all 0.3s ease;
@@ -160,15 +239,11 @@
             min-height: 0;
             margin: 0;
             opacity: 0;
+            overflow: hidden;
         }
 
         button:hover {
             background-color: #45a049;
-        }
-
-        .icon-button:hover {
-            color: #000;
-            background: none;
         }
 
         button:disabled {
@@ -194,7 +269,21 @@
             }
         }
 
-        /* Thêm media query để điều chỉnh kích thước cho màn hình nhỏ */
+        /* Drag area cho cửa sổ */
+        .drag-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            -webkit-app-region: drag;
+        }
+
+        .no-drag {
+            -webkit-app-region: no-drag;
+        }
+
         @media (max-width: 400px) {
             .container {
                 width: 95%;
@@ -216,17 +305,18 @@
 
 <body>
     <div class="container" id="timerContainer">
-        <div class="timer-header">
-            <h2>Đồng hồ đếm ngược</h2>
-            <div>
-                <button class="icon-button" id="toggleConfigBtn">⚙️</button>
+        <div class="drag-area"></div>
 
+        <div>
+            <h2 class="timer-header" id="timerHeader">Đồng hồ đếm ngược</h2>
+            <div>
+                <button class="icon-button no-drag" id="toggleConfigBtn">⚙️</button>
             </div>
         </div>
 
         <div class="timer" id="timer">00:00:00</div>
 
-        <div class="controls" id="configControls">
+        <div class="controls no-drag" id="configControls">
             <div class="input-group">
                 <label for="totalTime">Thời gian (phút):</label>
                 <input type="number" id="totalTime" min="1" value="25">
@@ -253,21 +343,33 @@
             </div>
         </div>
 
-        <div class="button-container" id="buttonContainer">
+        <div class="button-container no-drag" id="buttonContainer">
             <button id="startBtn">Bắt đầu</button>
             <button id="resetBtn" disabled>Đặt lại</button>
         </div>
     </div>
 
-    <audio id="alertSound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3"
-        preload="auto"></audio>
+
+
+    <audio id="alertSound" src="alert.mp3" preload="auto"></audio>
 
     <script>
-        const { ipcRenderer } = require('electron');
+        // Kiểm tra xem có chạy trong Electron không
+        const isElectron = typeof window !== 'undefined' && window.process && window.process.type === 'renderer';
+        let ipcRenderer;
+
+        if (isElectron) {
+            try {
+                ipcRenderer = require('electron').ipcRenderer;
+            } catch (e) {
+                console.log('Running in browser mode');
+            }
+        }
 
         // Elements
         const timerElement = document.getElementById('timer');
         const timerContainer = document.getElementById('timerContainer');
+        const timerHeader = document.getElementById('timerHeader');
         const configControls = document.getElementById('configControls');
         const buttonContainer = document.getElementById('buttonContainer');
         const toggleConfigBtn = document.getElementById('toggleConfigBtn');
@@ -279,13 +381,6 @@
         const startBtn = document.getElementById('startBtn');
         const resetBtn = document.getElementById('resetBtn');
         const alertSound = document.getElementById('alertSound');
-
-        // Thêm mã để cho phép di chuyển cửa sổ không có khung
-        document.body.addEventListener('mousedown', (e) => {
-            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-                ipcRenderer.send('drag-window');
-            }
-        });
 
         let countdown;
         let totalSeconds = 0;
@@ -302,14 +397,19 @@
             if (isConfigVisible) {
                 configControls.classList.remove('hidden');
                 buttonContainer.classList.remove('hidden');
-                document.body.classList.remove('compact-mode');
+                timerHeader.classList.remove('hidden');
                 toggleConfigBtn.textContent = '⚙️';
+                toggleConfigBtn.classList.add('visible');
+
+
             } else {
                 configControls.classList.add('hidden');
-                if (!isRunning) {
-                    buttonContainer.classList.add('hidden');
+                buttonContainer.classList.add('hidden');
+                if (isRunning) {
+                    timerHeader.classList.add('hidden');
+                    // toggleConfigBtn.classList.remove('visible');
+
                 }
-                document.body.classList.add('compact-mode');
                 toggleConfigBtn.textContent = '🔧';
             }
         }
@@ -354,13 +454,28 @@
             reminderTimeInput.disabled = true;
             reminderDurationInput.disabled = true;
 
-            // Auto-hide config when timer starts
-            if (isConfigVisible) {
-                toggleConfig();
-            }
+            // Thay đổi giao diện khi timer chạy
+            timerContainer.classList.add('timer-running');
+            timerElement.classList.add('running');
+            document.body.classList.add('timer-running'); // Ẩn scrollbar
 
-            // Always show buttons when timer is running
-            buttonContainer.classList.remove('hidden');
+            toggleConfigBtn.classList.add('always-visible');
+            toggleConfigBtn.style.opacity = '1'
+
+            // Ẩn controls và header
+            configControls.classList.add('hidden');
+            buttonContainer.classList.add('hidden');
+            timerHeader.classList.add('hidden');
+
+            isConfigVisible = false;
+
+            // Điều chỉnh kích thước cửa sổ khi timer chạy
+            if (ipcRenderer) {
+                // Delay một chút để animation hoàn thành
+                setTimeout(() => {
+                    ipcRenderer.send('resize-window-compact');
+                }, 300);
+            }
 
             countdown = setInterval(() => {
                 remainingSeconds--;
@@ -385,7 +500,9 @@
             // Flash effect
             if (flashEffectCheckbox.checked) {
                 timerContainer.classList.add('flash');
-                ipcRenderer.send('show-notification', 'Nhắc nhở', isFinal ? 'Hết giờ!' : 'Sắp hết giờ!');
+                if (ipcRenderer) {
+                    ipcRenderer.send('show-notification', 'Nhắc nhở', isFinal ? 'Hết giờ!' : 'Sắp hết giờ!');
+                }
             }
 
             // Sound effect
@@ -405,10 +522,10 @@
 
         // Play alert sound repeatedly
         function playAlertSound(duration) {
-            alertSound.play();
+            alertSound.play().catch(e => console.log('Audio play failed:', e));
 
             reminderInterval = setInterval(() => {
-                alertSound.play();
+                alertSound.play().catch(e => console.log('Audio play failed:', e));
             }, 1000);
 
             setTimeout(() => {
@@ -428,6 +545,19 @@
             totalTimeInput.disabled = false;
             reminderTimeInput.disabled = false;
             reminderDurationInput.disabled = false;
+
+            // Khôi phục giao diện
+            timerContainer.classList.remove('timer-running');
+            timerElement.classList.remove('running');
+            document.body.classList.remove('timer-running'); // Hiện lại scrollbar
+            timerHeader.classList.remove('hidden');
+
+            // Khôi phục kích thước cửa sổ
+            if (ipcRenderer) {
+                setTimeout(() => {
+                    ipcRenderer.send('resize-window-normal');
+                }, 300);
+            }
         }
 
         // Reset timer
@@ -443,10 +573,13 @@
                 reminderInterval = null;
             }
 
-            // Hide buttons if config is hidden
+            // Hiện lại controls
             if (!isConfigVisible) {
-                buttonContainer.classList.add('hidden');
+                toggleConfig();
             }
+
+            // Khôi phục scrollbar
+            document.body.classList.remove('timer-running');
         }
 
         // Event listeners
@@ -454,18 +587,12 @@
         resetBtn.addEventListener('click', resetTimer);
         toggleConfigBtn.addEventListener('click', toggleConfig);
 
-        // Initialize with config visible
-        // Thêm vào cuối phần script
+        // Initialize
         document.addEventListener('DOMContentLoaded', function () {
-            // Đảm bảo tất cả các phần tử hiển thị khi khởi động
             configControls.classList.remove('hidden');
             buttonContainer.classList.remove('hidden');
-            document.body.classList.remove('compact-mode');
-
-            // Cập nhật hiển thị timer
+            timerHeader.classList.remove('hidden');
             updateTimerDisplay();
-
-            // Log để kiểm tra
             console.log('App initialized');
         });
     </script>

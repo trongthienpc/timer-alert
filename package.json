@@ -2,7 +2,7 @@
   "name": "timer-countdown",
   "version": "1.0.0",
   "description": "Ứng dụng đồng hồ đếm ngược với tính năng nhắc nhở",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "bun electron .",
     "build": "electron-builder"
