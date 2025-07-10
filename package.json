@@ -1,6 +1,6 @@
 {
   "name": "timer-countdown",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ứng dụng đồng hồ đếm ngược với tính năng nhắc nhở",
   "main": "src/main.js",
   "scripts": {
@@ -21,9 +21,10 @@
   "build": {
     "appId": "com.timer.countdown",
     "productName": "Timer Countdown",
+    "icon": "assets/icon.ico",
     "win": {
       "target": "nsis",
-      "icon": "icon.ico"
+      "icon": "assets/icon.ico"
     }
   }
 }

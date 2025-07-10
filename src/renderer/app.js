@@ -169,14 +169,14 @@ class TimerApp {
     this.reminderDurationInput.disabled = false;
 
     // Update UI
-    this.timerContainer.classList.remove("timer-running");
-    this.timerElement.classList.remove("running");
-    document.body.classList.remove("timer-running");
+    // this.timerContainer.classList.remove("timer-running");
+    // this.timerElement.classList.remove("running");
+    // document.body.classList.remove("timer-running");
 
     // Switch back to normal mode
-    if (!this.isConfigVisible) {
-      this.toggleConfig();
-    }
+    // if (!this.isConfigVisible) {
+    //   this.toggleConfig();
+    // }
   }
 
   // Reset timer
