@@ -36,6 +36,9 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, "renderer/index.html"));
   mainWindow.setMenu(null);
 
+  mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
+  mainWindow.setVisibleOnAllWorkspaces(true);
+
   // Mở DevTools khi phát triển
   // mainWindow.webContents.openDevTools();
 

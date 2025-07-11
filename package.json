@@ -21,10 +21,10 @@
   "build": {
     "appId": "com.timer.countdown",
     "productName": "Timer Countdown",
-    "icon": "assets/icon.ico",
+  
     "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico"
+      "target": "nsis"
+      
     }
   }
 }
